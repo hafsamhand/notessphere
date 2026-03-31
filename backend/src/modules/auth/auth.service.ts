@@ -42,6 +42,8 @@ export class AuthService {
     }
 
     const payload = { sub: user.id, email: user.email };
+    console.log('Signing JWT with payload:', payload); // Debug log
+    console.log('Signing JWT Secret:', process.env.JWT_SECRET); // Debug log
 
     return {
       access_token: this.jwtService.sign(payload),
