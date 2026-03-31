@@ -2,9 +2,11 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 import { PrismaMariaDb } from '@prisma/adapter-mariadb';
 const adapter = new PrismaMariaDb({
-  host: 'localhost',
+  host: '127.0.0.1',
   port: 3306,
-  // connectionLimit: 5,
+  user: 'root',
+  database: process.env['DB_NAME'] || 'notessphere',
+  connectionLimit: 5,
 });
 
 @Injectable()
