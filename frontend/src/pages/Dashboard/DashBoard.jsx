@@ -1,8 +1,11 @@
 import { useEffect, useState } from 'react';
 import { getCategories } from '../../services/categories.service';
+import { useNavigate } from 'react-router-dom';
+import CategoryCard from '../../components/CategoryCard';
 
 function Dashboard() {
   const [categories, setCategories] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     getCategories()
@@ -10,17 +13,18 @@ function Dashboard() {
       .catch((err) => console.error(err));
   }, []);
 
+  const handleClick = (id) => {
+    navigate(`/notes?categoryId=${id}`);
+  };
   return (
-    <div>
+    <div style={{ padding: '20px' }}>
       <h1>Dashboard</h1>
 
-      <h3>Categories</h3>
-
-      <ul>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: '20px' }}>
         {categories.map((cat) => (
-          <li key={cat.id}>{cat.name}</li>
+          <CategoryCard key={cat.id} category={cat} onClick={handleClick} />
         ))}
-      </ul>
+      </div>
     </div>
   );
 }

@@ -1,8 +1,9 @@
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Login from '../pages/Auth/Login';
-import Register from '../pages/Auth/Register';
-import Dashboard from '../pages/Dashboard/Dashboard';
-import PrivateRoute from './PrivateRoute';
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "../pages/Auth/Login";
+import Register from "../pages/Auth/Register";
+import PrivateRoute from "./PrivateRoute";
+import NotesPage from '../pages/Notes/NotesPage';
+import Dashboard from '../pages/Dashboard/DashBoard';
 
 function AppRoutes() {
   return (
@@ -16,6 +17,15 @@ function AppRoutes() {
           element={
             <PrivateRoute>
               <Dashboard />
+            </PrivateRoute>
+          }
+        />
+
+        <Route
+          path="/notes"
+          element={
+            <PrivateRoute>
+              <NotesPage />
             </PrivateRoute>
           }
         />
