@@ -26,6 +26,7 @@ function NotesPage() {
 
   useEffect(() => {
     fetchNotes();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId]);
 
   const handleCreate = async (metadata, title) => {
@@ -61,13 +62,6 @@ function NotesPage() {
 
       <div className="grid gap-4 mt-6">
         {notes.map((note) => (
-          // <div
-          //   key={note.id}
-          //   className="bg-white p-4 rounded-xl shadow"
-          // >
-          //   <h4 className="font-semibold">{note.title}</h4>
-          //   <pre className="text-sm text-gray-500">{JSON.stringify(note.metadata, null, 2)}</pre>
-          // </div>
           <NoteCard key={note.id} note={note} />
         ))}
       </div>
