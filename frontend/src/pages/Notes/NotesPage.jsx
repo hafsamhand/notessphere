@@ -11,6 +11,7 @@ import { getCategories } from "../../services/categories.service";
 import Modal from "../../components/Modal";
 import NoteCard from "../../components/NoteCard";
 import AppLayout from "../../components/layout/AppLayout";
+import Swal from 'sweetalert2'
 
 function NotesPage() {
   const [notes, setNotes] = useState([]);
@@ -37,16 +38,6 @@ function NotesPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId]);
 
-  // const handleCreate = async (metadata, title) => {
-  //   await createNote({
-  //     title: title || `${category.name} note`,
-  //     categoryId: Number(categoryId),
-  //     metadata,
-  //   });
-
-  //   fetchNotes();
-  //   setOpen(false);
-  // };
 
   const handleEdit = (note) => {
     setSelectedNote(note);
@@ -55,10 +46,19 @@ function NotesPage() {
   };
 
   const handleDelete = async (id) => {
-    if (!confirm("Delete this note?")) return;
-
-    await deleteNote(id);
-    fetchNotes();
+    Swal.fire({
+      title: "Do you want to delete this note?",
+      showDenyButton: false,
+      showCancelButton: true,
+      confirmButtonText: "Delete",
+    }).then(async (result) => {
+      if (result.isConfirmed) {
+        await deleteNote(id);
+        fetchNotes();
+        Swal.fire("Deleted!", "", "success");
+      }
+      else return;
+    });
   };
 
   const handleSubmit = async (data, title) => {
