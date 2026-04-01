@@ -5,7 +5,7 @@ function DynamicForm({ categoryName, onSubmit }) {
   const fields = categoryForms[categoryName] || [];
 
   const [form, setForm] = useState({});
-  const [title, setTitle] = useState(null);
+  const [title, setTitle] = useState("");
 
   const handleChange = (name, value) => {
     setForm({ ...form, [name]: value });

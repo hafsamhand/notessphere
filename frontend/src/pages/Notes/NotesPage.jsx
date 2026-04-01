@@ -3,8 +3,12 @@ import { useSearchParams } from "react-router-dom";
 import { getNotes, createNote } from "../../services/notes.service";
 import DynamicForm from '../../components/DynamicForm';
 import { getCategories } from '../../services/categories.service';
+import Modal from '../../components/Modal';
+import NoteCard from '../../components/NoteCard';
+
 function NotesPage() {
   const [notes, setNotes] = useState([]);
+  const [open, setOpen] = useState(false);
   const [category, setCategory] = useState(null);
   const [searchParams] = useSearchParams();
 
@@ -32,28 +36,39 @@ function NotesPage() {
     });
 
     fetchNotes();
+    setOpen(false);
   };
 
  return (
     <div style={{ padding: '20px' }}>
       <h1 className="text-2xl font-bold mb-4">Notes - {category?.name}</h1>
 
+      <button
+        onClick={() => setOpen(true)}
+        className="fixed bottom-6 right-6 bg-blue-500 text-white w-14 h-14 rounded-full shadow-lg text-2xl hover:bg-blue-600"
+      >
+        +
+      </button>
+
       {category && (
-        <DynamicForm
-          categoryName={category.name}
-          onSubmit={handleCreate}
-        />
+        <Modal isOpen={open} onClose={() => setOpen(false)}>
+          <DynamicForm
+            categoryName={category.name}
+            onSubmit={handleCreate}
+          />
+        </Modal>
       )}
 
       <div className="grid gap-4 mt-6">
         {notes.map((note) => (
-          <div
-            key={note.id}
-            className="bg-white p-4 rounded-xl shadow"
-          >
-            <h4 className="font-semibold">{note.title}</h4>
-            <pre className="text-sm text-gray-500">{JSON.stringify(note.metadata, null, 2)}</pre>
-          </div>
+          // <div
+          //   key={note.id}
+          //   className="bg-white p-4 rounded-xl shadow"
+          // >
+          //   <h4 className="font-semibold">{note.title}</h4>
+          //   <pre className="text-sm text-gray-500">{JSON.stringify(note.metadata, null, 2)}</pre>
+          // </div>
+          <NoteCard key={note.id} note={note} />
         ))}
       </div>
     </div>
