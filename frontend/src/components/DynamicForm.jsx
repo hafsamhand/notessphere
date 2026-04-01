@@ -21,7 +21,7 @@ function DynamicForm({ categoryName, onSubmit }) {
       case 'textarea':
         return (
           <textarea
-            className="w-full border p-2 rounded"
+            className="w-full border border-gray-300 p-2 rounded"
             value={form[field.name] || ''}
             onChange={(e) => handleChange(field.name, e.target.value)}
           />
@@ -30,7 +30,7 @@ function DynamicForm({ categoryName, onSubmit }) {
       case 'select':
         return (
           <select
-            className="w-full border p-2 rounded"
+            className="w-full border border-gray-300 p-2 rounded"
             value={form[field.name] || ''}
             onChange={(e) => handleChange(field.name, e.target.value)}
           >
@@ -45,7 +45,7 @@ function DynamicForm({ categoryName, onSubmit }) {
         return (
           <input
             type={field.type}
-            className="w-full border p-2 rounded"
+            className="w-full border border-gray-300 p-2 rounded"
             value={form[field.name] || ''}
             onChange={(e) => handleChange(field.name, e.target.value)}
           />
@@ -53,18 +53,18 @@ function DynamicForm({ categoryName, onSubmit }) {
     }
   };
   return (
-    <div className="bg-white p-6 rounded-2xl shadow-md mt-6">
+    <div className="bg-white p-6 ">
       <h3 className="text-lg font-semibold mb-4">{categoryName} Form</h3>
 
-      <label className="block mb-2">Title</label>
+      <label className="block mb-2 text-gray-700">Title</label>
           <input
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="border p-2 rounded mb-4 w-full"
+            className="border border-gray-300 p-2 rounded mb-4 w-full"
           />
       {fields.map((field) => (
-        <div key={field.name} className="mb-4">
+        <div key={field.name} className="mb-4 text-gray-700">
           <label className="block mb-1 text-sm">{field.label}</label>
           {renderField(field)}
         </div>
