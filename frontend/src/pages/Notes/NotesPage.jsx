@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import { getNotes, createNote } from "../../services/notes.service";
-import DynamicForm from '../../components/DynamicForm';
-import { getCategories } from '../../services/categories.service';
-import Modal from '../../components/Modal';
-import NoteCard from '../../components/NoteCard';
+import DynamicForm from "../../components/DynamicForm";
+import { getCategories } from "../../services/categories.service";
+import Modal from "../../components/Modal";
+import NoteCard from "../../components/NoteCard";
+import AppLayout from "../../components/layout/AppLayout";
 
 function NotesPage() {
   const [notes, setNotes] = useState([]);
@@ -14,7 +15,7 @@ function NotesPage() {
 
   const categoryId = searchParams.get("categoryId");
 
-    useEffect(() => {
+  useEffect(() => {
     getCategories().then((res) => {
       const found = res.data.find((c) => c.id == categoryId);
       setCategory(found);
@@ -26,7 +27,7 @@ function NotesPage() {
 
   useEffect(() => {
     fetchNotes();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId]);
 
   const handleCreate = async (metadata, title) => {
@@ -40,32 +41,31 @@ function NotesPage() {
     setOpen(false);
   };
 
- return (
-    <div style={{ padding: '20px' }}>
-      <h1 className="text-2xl font-bold mb-4">Notes - {category?.name}</h1>
+  return (
+    <AppLayout>
+      <div className="max-w-5xl mx-auto">
+        <h1 className="text-2xl font-bold mb-4">Notes - {category?.name}</h1>
 
-      <button
-        onClick={() => setOpen(true)}
-        className="fixed bottom-6 right-6 bg-blue-500 text-white w-14 h-14 rounded-full shadow-lg text-2xl hover:bg-blue-600"
-      >
-        +
-      </button>
+        <button
+          onClick={() => setOpen(true)}
+          className="fixed bottom-6 right-6 bg-blue-500 text-white w-14 h-14 rounded-full shadow-lg text-2xl hover:bg-blue-600"
+        >
+          +
+        </button>
 
-      {category && (
-        <Modal isOpen={open} onClose={() => setOpen(false)}>
-          <DynamicForm
-            categoryName={category.name}
-            onSubmit={handleCreate}
-          />
-        </Modal>
-      )}
+        {category && (
+          <Modal isOpen={open} onClose={() => setOpen(false)}>
+            <DynamicForm categoryName={category.name} onSubmit={handleCreate} />
+          </Modal>
+        )}
 
-      <div className="grid gap-4 mt-6">
-        {notes.map((note) => (
-          <NoteCard key={note.id} note={note} />
-        ))}
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+          {notes.map((note) => (
+            <NoteCard key={note.id} note={note} />
+          ))}
+        </div>
       </div>
-    </div>
+    </AppLayout>
   );
 }
 

@@ -36,7 +36,7 @@ function NoteCard({ note }) {
   };
 
   return (
-    <div className="bg-blue-200 rounded-2xl shadow-md p-4 hover:shadow-xl transition transform hover:-translate-y-1">
+    <div className="bg-gray-200 rounded-2xl shadow-md p-4 hover:shadow-xl transition transform hover:-translate-y-1">
       <h3 className="font-semibold text-lg mb-2">{title}</h3>
       <div className="text-sm text-gray-600 space-y-1">
         {renderContent()}

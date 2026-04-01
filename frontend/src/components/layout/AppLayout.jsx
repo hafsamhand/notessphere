@@ -1,15 +1,20 @@
 import { useContext } from 'react';
 import { AuthContext } from '../../context/AuthContext';
+import { useNavigate } from "react-router-dom";
 
 function AppLayout({ children }) {
   const { logoutUser } = useContext(AuthContext);
+  const navigate = useNavigate();
 
+  const handleClick = () => {
+    navigate(`/dashboard`);
+  };
   return (
     <div className=" h-screen bg-gray-100">
 
       {/* Sidebar */}
       <div className="flex w-full h-[5rem] bg-white shadow-md p-4 justify-between">
-        <h2 className="text-xl font-bold mb-6">NoteSphere 🌌</h2>
+        <h2 className="text-xl font-bold mb-6 cursor-pointer" onClick={handleClick}>NoteSphere 🌌</h2>
 
         <button
           onClick={logoutUser}
