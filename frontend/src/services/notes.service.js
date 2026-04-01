@@ -9,3 +9,11 @@ export const createNote = (data) => {
     data.content = "test for now";
   return api.post('/notes', data);
 };
+
+export const updateNote = (id, data) => {
+  return api.patch(`/notes/${id}`, data);
+};
+
+export const deleteNote = (id) => {
+  return api.delete(`/notes/${id}`);
+};

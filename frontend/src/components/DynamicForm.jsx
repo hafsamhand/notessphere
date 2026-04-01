@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { categoryForms } from '../config/categoryForms';
 
-function DynamicForm({ categoryName, onSubmit }) {
+function DynamicForm({ categoryName, onSubmit, initialData = {}, initialTitle = '' }) {
   const fields = categoryForms[categoryName] || [];
 
-  const [form, setForm] = useState({});
-  const [title, setTitle] = useState("");
+  const [form, setForm] = useState(initialData);
+  const [title, setTitle] = useState(initialTitle);
 
   const handleChange = (name, value) => {
     setForm({ ...form, [name]: value });

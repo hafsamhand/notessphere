@@ -1,6 +1,11 @@
 import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router-dom";
-import { getNotes, createNote } from "../../services/notes.service";
+import {
+  getNotes,
+  createNote,
+  updateNote,
+  deleteNote,
+} from "../../services/notes.service";
 import DynamicForm from "../../components/DynamicForm";
 import { getCategories } from "../../services/categories.service";
 import Modal from "../../components/Modal";
@@ -12,6 +17,8 @@ function NotesPage() {
   const [open, setOpen] = useState(false);
   const [category, setCategory] = useState(null);
   const [searchParams] = useSearchParams();
+  const [selectedNote, setSelectedNote] = useState(null);
+  const [isEdit, setIsEdit] = useState(false);
 
   const categoryId = searchParams.get("categoryId");
 
@@ -30,15 +37,45 @@ function NotesPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [categoryId]);
 
-  const handleCreate = async (metadata, title) => {
-    await createNote({
-      title: title || `${category.name} note`,
-      categoryId: Number(categoryId),
-      metadata,
-    });
+  // const handleCreate = async (metadata, title) => {
+  //   await createNote({
+  //     title: title || `${category.name} note`,
+  //     categoryId: Number(categoryId),
+  //     metadata,
+  //   });
 
+  //   fetchNotes();
+  //   setOpen(false);
+  // };
+
+  const handleEdit = (note) => {
+    setSelectedNote(note);
+    setIsEdit(true);
+    setOpen(true);
+  };
+
+  const handleDelete = async (id) => {
+    if (!confirm("Delete this note?")) return;
+
+    await deleteNote(id);
     fetchNotes();
+  };
+
+  const handleSubmit = async (data, title) => {
+    if (isEdit) {
+      await updateNote(selectedNote.id, { metadata: data, title });
+      setIsEdit(false);
+    } else {
+      await createNote({
+        title: title || `${category.name} note`,
+        categoryId: Number(categoryId),
+        metadata: data,
+      });
+    }
+
     setOpen(false);
+    setSelectedNote(null);
+    fetchNotes();
   };
 
   return (
@@ -55,13 +92,23 @@ function NotesPage() {
 
         {category && (
           <Modal isOpen={open} onClose={() => setOpen(false)}>
-            <DynamicForm categoryName={category.name} onSubmit={handleCreate} />
+            <DynamicForm
+              categoryName={category.name}
+              initialData={selectedNote?.metadata}
+              initialTitle={selectedNote?.title}
+              onSubmit={handleSubmit}
+            />
           </Modal>
         )}
 
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {notes.map((note) => (
-            <NoteCard key={note.id} note={note} />
+            <NoteCard
+              key={note.id}
+              note={note}
+              onEdit={handleEdit}
+              onDelete={handleDelete}
+            />
           ))}
         </div>
       </div>

@@ -1,4 +1,4 @@
-function NoteCard({ note }) {
+function NoteCard({ note, onEdit, onDelete }) {
   const { title, metadata, category } = note;
 
   const renderContent = () => {
@@ -36,11 +36,17 @@ function NoteCard({ note }) {
   };
 
   return (
-    <div className="bg-gray-200 rounded-2xl shadow-md p-4 hover:shadow-xl transition transform hover:-translate-y-1">
+    <div className=" bg-gray-200 rounded-2xl shadow-md p-4 hover:shadow-xl transition transform hover:-translate-y-1">
+      <div className="flex justify-end space-x-2 mb-2">
+        <button className="cursor-pointer" onClick={() => onEdit(note)}>✏️</button>
+        <button className="cursor-pointer" onClick={() => onDelete(note.id)}>🗑️</button>
+      </div>
       <h3 className="font-semibold text-lg mb-2">{title}</h3>
+      <div>test</div>
       <div className="text-sm text-gray-600 space-y-1">
         {renderContent()}
       </div>
+
     </div>
   );
 }
