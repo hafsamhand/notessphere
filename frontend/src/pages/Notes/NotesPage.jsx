@@ -24,9 +24,9 @@ function NotesPage() {
     fetchNotes();
   }, [categoryId]);
 
-  const handleCreate = async (metadata) => {
+  const handleCreate = async (metadata, title) => {
     await createNote({
-      title: `${category.name} note`,
+      title: title || `${category.name} note`,
       categoryId: Number(categoryId),
       metadata,
     });
@@ -36,7 +36,7 @@ function NotesPage() {
 
  return (
     <div style={{ padding: '20px' }}>
-      <h1>Notes - {category?.name}</h1>
+      <h1 className="text-2xl font-bold mb-4">Notes - {category?.name}</h1>
 
       {category && (
         <DynamicForm
@@ -45,18 +45,14 @@ function NotesPage() {
         />
       )}
 
-      <div style={{ marginTop: '20px' }}>
+      <div className="grid gap-4 mt-6">
         {notes.map((note) => (
           <div
             key={note.id}
-            style={{
-              border: '1px solid #ccc',
-              padding: '10px',
-              marginBottom: '10px',
-            }}
+            className="bg-white p-4 rounded-xl shadow"
           >
-            <h4>{note.title}</h4>
-            <pre>{JSON.stringify(note.metadata, null, 2)}</pre>
+            <h4 className="font-semibold">{note.title}</h4>
+            <pre className="text-sm text-gray-500">{JSON.stringify(note.metadata, null, 2)}</pre>
           </div>
         ))}
       </div>
